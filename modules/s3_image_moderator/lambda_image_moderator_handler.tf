@@ -1,11 +1,11 @@
 data "archive_file" "lambda_image_moderator_zip" {
   type       = "zip"
-  source_dir = "${path.module}/lambada_image_moderation"
-  output_path = "${path.module}/lambada_image_moderation.zip"
+  source_dir = "${path.module}/lambda_image_moderator"
+  output_path = "${path.module}/lambda_image_moderator.zip"
 }
 
 resource "aws_iam_role" "lambda_image_moderator_exec_role" {
-  name = "${var.environment}-lambda-image-moderation-exec-role"
+  name = "${var.environment}-lambda-image-moderator-exec-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -22,7 +22,7 @@ resource "aws_iam_role" "lambda_image_moderator_exec_role" {
 resource "aws_lambda_function" "lambda_image_moderator" {
   function_name = "${var.environment}-image-moderator-lambda"
   runtime       = "python3.12"
-  handler       = "image_moderation_handler.handler"
+  handler       = "image_moderator_handler.handler"
 
   filename         = data.archive_file.lambda_image_moderator_zip.output_path
   source_code_hash = data.archive_file.lambda_image_moderator_zip.output_base64sha256
@@ -41,8 +41,8 @@ resource "aws_lambda_function" "lambda_image_moderator" {
 
 
 resource "aws_iam_policy" "lambda_image_moderator_policy" {
-  name        = "${var.environment}-lambda-process-uploaded-file-policy"
-  description = "Allow Lambda to access S3 upload bucket for read and update"
+  name        = "${var.environment}-lambda-image-moderator-policy"
+  description = "Allow Lambda to access S3 upload bucket and publish to SNS topic"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -54,7 +54,7 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
         Resource = ["*"]
       },
       {
-        Action = ["s3:GetObject", "s3:ListBucket"]
+        Action = ["s3:GetObject", "s3:ListBucket", "s3:PutObjectTagging"]
         Effect = "Allow"
         Resource = [
           "${var.s3_bucket_arn}/*",
