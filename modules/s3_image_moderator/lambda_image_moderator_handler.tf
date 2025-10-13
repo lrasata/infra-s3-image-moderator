@@ -54,7 +54,7 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
         Resource = ["*"]
       },
       {
-        Action = ["s3:GetObject", "s3:ListBucket", "s3:PutObjectTagging"]
+        Action = ["s3:GetObject", "s3:GetObjectTagging", "s3:ListBucket", "s3:PutObjectTagging"]
         Effect = "Allow"
         Resource = [
           "${var.s3_bucket_arn}/*",
