@@ -33,7 +33,7 @@ resource "aws_lambda_function" "lambda_image_moderator" {
 
   environment {
     variables = {
-      BUCKET_NAME = var.s3_bucket_name
+      BUCKET_NAME = var.s3_src_bucket_name
       SNS_TOPIC_ARN = aws_sns_topic.scan_alerts.arn
     }
   }
@@ -57,8 +57,8 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
         Action = ["s3:GetObject", "s3:GetObjectTagging", "s3:ListBucket", "s3:PutObjectTagging"]
         Effect = "Allow"
         Resource = [
-          "${var.s3_bucket_arn}/*",
-          "${var.s3_bucket_arn}"
+          "${var.s3_src_bucket_arn}/*",
+          "${var.s3_src_bucket_arn}"
         ]
       },
       {

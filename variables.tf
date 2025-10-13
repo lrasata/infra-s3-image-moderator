@@ -20,6 +20,12 @@ variable "s3_bucket_arn" {
   type        = string
 }
 
+variable "s3_quarantine_bucket_name" {
+  description = "S3 quarantine bucket name to scan"
+  type        = string
+  default     = "quarantine-bucket"
+}
+
 variable "admin_email" {
   description = "Admin email to send notifications to"
   type        = string
