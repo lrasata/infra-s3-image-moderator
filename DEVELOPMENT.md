@@ -2,10 +2,12 @@
 
 ## Prerequisites
 
-- **Terraform** >= 1.3 installed: https://www.terraform.io/downloads.html
+- **Terraform** >= 1.3 installed: https://www.terraform.io/downloads.html 
 - Access to **AWS configured**
+  - Make sure you have enough permissions to create and manage resources in the AWS account. 
+  - **To do so, check the IAM policies attached to your user and the ones needed to run this code.**
 
-## Getting Started
+## Getting started
 
 **1. Clone the repository:**
 
