@@ -21,7 +21,7 @@ variable "s3_src_bucket_arn" {
 }
 
 variable "s3_quarantine_bucket_name" {
-  description = "S3 quarantine bucket name to scan"
+  description = "S3 quarantine bucket name for flagged content"
   type = string
   default = "quarantine-bucket"
 }

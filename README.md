@@ -20,7 +20,7 @@ It configured to run automatically (e.g., every 24 hours) and notifies administr
 Use in a terraform project by importing the module:
 
 ```text
-module "image_uploader" {
+module "image_moderator" {
   source = "git::https://github.com/lrasata/infra-s3-image-moderator.git//modules/s3_image_moderator?ref=v1.0.0"
 
   region                    = var.region
