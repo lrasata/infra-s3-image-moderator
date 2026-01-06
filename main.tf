@@ -7,4 +7,5 @@ module "s3_image_moderator" {
   s3_src_bucket_arn         = var.s3_bucket_arn
   s3_quarantine_bucket_name = var.s3_quarantine_bucket_name
   admin_email               = var.admin_email
+  app_id                    = var.app_id
 }

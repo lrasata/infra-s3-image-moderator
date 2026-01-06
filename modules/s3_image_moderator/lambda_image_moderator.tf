@@ -1,6 +1,6 @@
 data "archive_file" "lambda_image_moderator_zip" {
-  type       = "zip"
-  source_dir = "${path.module}/lambda_image_moderator"
+  type        = "zip"
+  source_dir  = "${path.module}/lambda_image_moderator"
   output_path = "${path.module}/lambda_image_moderator.zip"
 }
 
@@ -29,11 +29,11 @@ resource "aws_lambda_function" "lambda_image_moderator" {
 
   role = aws_iam_role.lambda_image_moderator_exec_role.arn
 
-  timeout     = 30  # seconds
+  timeout = 30 # seconds
 
   environment {
     variables = {
-      BUCKET_NAME = var.s3_src_bucket_name
+      BUCKET_NAME   = var.s3_src_bucket_name
       SNS_TOPIC_ARN = aws_sns_topic.scan_alerts.arn
     }
   }
@@ -47,11 +47,11 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "rekognition:DetectModerationLabels"
         ],
-        Resource = ["*"]
+        Resource = [var.s3_src_bucket_arn]
       },
       {
         Action = ["s3:GetObject", "s3:GetObjectTagging", "s3:ListBucket", "s3:PutObjectTagging"]
@@ -62,8 +62,8 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
         ]
       },
       {
-        Action = ["sns:Publish"]
-        Effect = "Allow"
+        Action   = ["sns:Publish"]
+        Effect   = "Allow"
         Resource = [aws_sns_topic.scan_alerts.arn]
       }
     ]

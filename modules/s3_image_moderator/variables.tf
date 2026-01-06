@@ -10,23 +10,27 @@ variable "environment" {
   default     = "prod"
 }
 
+variable "app_id" {
+  type = string
+}
+
 variable "s3_src_bucket_name" {
   description = "S3 src bucket name to scan"
-  type = string
+  type        = string
 }
 
 variable "s3_src_bucket_arn" {
   description = "S3 src bucket ARN to scan"
-  type = string
+  type        = string
 }
 
 variable "s3_quarantine_bucket_name" {
   description = "S3 quarantine bucket name for flagged content"
-  type = string
-  default = "quarantine-bucket"
+  type        = string
+  default     = "quarantine-bucket"
 }
 
 variable "admin_email" {
   description = "Admin email to send notifications to"
-  type = string
+  type        = string
 }

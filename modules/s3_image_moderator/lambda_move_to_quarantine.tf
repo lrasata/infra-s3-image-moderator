@@ -1,6 +1,6 @@
 data "archive_file" "lambda_move_to_quarantine_zip" {
-  type       = "zip"
-  source_dir = "${path.module}/lambda_move_to_quarantine"
+  type        = "zip"
+  source_dir  = "${path.module}/lambda_move_to_quarantine"
   output_path = "${path.module}/lambda_move_to_quarantine.zip"
 }
 
@@ -29,11 +29,11 @@ resource "aws_lambda_function" "lambda_move_to_quarantine" {
 
   role = aws_iam_role.lambda_move_to_quarantine_exec_role.arn
 
-  timeout     = 30  # seconds
+  timeout = 30 # seconds
 
   environment {
     variables = {
-      SOURCE_BUCKET = var.s3_src_bucket_name
+      SOURCE_BUCKET     = var.s3_src_bucket_name
       QUARANTINE_BUCKET = aws_s3_bucket.s3_quarantine_bucket.id
     }
   }

@@ -10,6 +10,10 @@ variable "environment" {
   default     = "prod"
 }
 
+variable "app_id" {
+  type = string
+}
+
 variable "s3_bucket_name" {
   description = "S3 bucket name to scan"
   type        = string
