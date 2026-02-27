@@ -97,5 +97,3 @@ terraform destroy -var-file="staging.tfvars"
 ````
 
 Replace `staging.tfvars` with the appropriate tfvars environment file.
-m apply -var-file="staging.tfvars"
-````

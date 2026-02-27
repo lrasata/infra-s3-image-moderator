@@ -7,7 +7,7 @@ variable "region" {
 variable "environment" {
   description = "The environment for the deployment (e.g., dev, staging, prod)"
   type        = string
-  default     = "prod"
+  default     = "staging"
 }
 
 variable "app_id" {

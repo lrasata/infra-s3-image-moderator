@@ -5,7 +5,7 @@ data "archive_file" "lambda_image_moderator_zip" {
 }
 
 resource "aws_iam_role" "lambda_image_moderator_exec_role" {
-  name = "${var.environment}-lambda-image-moderator-exec-role"
+  name = "${var.environment}-${var.app_id}-lambda-image-moderator-exec-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -20,7 +20,7 @@ resource "aws_iam_role" "lambda_image_moderator_exec_role" {
 }
 
 resource "aws_lambda_function" "lambda_image_moderator" {
-  function_name = "${var.environment}-image-moderator-lambda"
+  function_name = "${var.environment}-${var.app_id}-image-moderator-lambda"
   runtime       = "python3.12"
   handler       = "image_moderator_handler.handler"
 
@@ -41,7 +41,7 @@ resource "aws_lambda_function" "lambda_image_moderator" {
 
 
 resource "aws_iam_policy" "lambda_image_moderator_policy" {
-  name        = "${var.environment}-lambda-image-moderator-policy"
+  name        = "${var.environment}-${var.app_id}-lambda-image-moderator-policy"
   description = "Allow Lambda to access S3 upload bucket and publish to SNS topic"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -51,7 +51,7 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
         Action = [
           "rekognition:DetectModerationLabels"
         ],
-        Resource = [var.s3_src_bucket_arn]
+        Resource = "*"
       },
       {
         Action = ["s3:GetObject", "s3:GetObjectTagging", "s3:ListBucket", "s3:PutObjectTagging"]
@@ -65,6 +65,12 @@ resource "aws_iam_policy" "lambda_image_moderator_policy" {
         Action   = ["sns:Publish"]
         Effect   = "Allow"
         Resource = [aws_sns_topic.scan_alerts.arn]
+      },
+      # KMS access for encrypted SNS topic
+      {
+        Effect   = "Allow"
+        Action   = ["kms:GenerateDataKey", "kms:Encrypt"]
+        Resource = aws_kms_key.sns_cmk.arn
       }
     ]
   })

@@ -51,7 +51,7 @@ resource "aws_iam_policy" "lambda_move_to_quarantine_policy" {
         Effect = "Allow"
         Resource = [
           "${aws_s3_bucket.s3_quarantine_bucket.arn}/*",
-          "${aws_s3_bucket.s3_quarantine_bucket.arn}"
+          aws_s3_bucket.s3_quarantine_bucket.arn
         ]
       },
       {
@@ -59,7 +59,15 @@ resource "aws_iam_policy" "lambda_move_to_quarantine_policy" {
         Effect = "Allow"
         Resource = [
           "${var.s3_src_bucket_arn}/*",
-          "${var.s3_src_bucket_arn}"
+          var.s3_src_bucket_arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = ["kms:GenerateDataKey", "kms:Decrypt", "kms:Encrypt"]
+        Resource = [
+          "${aws_s3_bucket.s3_quarantine_bucket.arn}/*",
+          aws_s3_bucket.s3_quarantine_bucket.arn
         ]
       }
     ]
